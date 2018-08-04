@@ -75,7 +75,8 @@
             this.dataGridView_Maçlar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Maçlar.Location = new System.Drawing.Point(12, 64);
             this.dataGridView_Maçlar.Name = "dataGridView_Maçlar";
-            this.dataGridView_Maçlar.Size = new System.Drawing.Size(445, 266);
+            this.dataGridView_Maçlar.RowHeadersVisible = false;
+            this.dataGridView_Maçlar.Size = new System.Drawing.Size(403, 266);
             this.dataGridView_Maçlar.TabIndex = 5;
             // 
             // button_PanoyaKopyala
@@ -119,7 +120,7 @@
             this.AcceptButton = this.button_VeriÇek;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(481, 366);
+            this.ClientSize = new System.Drawing.Size(430, 342);
             this.Controls.Add(this.label_Tablo);
             this.Controls.Add(this.comboBox_Tablo);
             this.Controls.Add(this.button_PanoyaKopyala);
@@ -130,7 +131,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HTML Veri Çekme";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Maçlar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.oyuncuBindingSource)).EndInit();

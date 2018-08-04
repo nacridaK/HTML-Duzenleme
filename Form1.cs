@@ -20,6 +20,7 @@ namespace HTML_Veri_Çekme
         public Form1()
         {
             InitializeComponent();
+            comboBox_Tablo.SelectedIndex = 0;
         }
         private void button_VeriÇek_Click(object sender, EventArgs e)
         {
@@ -61,7 +62,7 @@ namespace HTML_Veri_Çekme
         }
         private void MesajKutusuGöster(string MesajNumarası)
         {        
-            switch (MessageBox.Show("HTML kodu panoya kaydedildi, düzenleme sayfası açılsın mı?", "Onay", MessageBoxButtons.YesNoCancel,MessageBoxIcon.Question,MessageBoxDefaultButton.Button1))
+            switch (MessageBox.Show("HTML kodu panoya kaydedildi, düzenleme sayfası açılıp yazılım kapatılsın mı?", "Çıkış Onayı", MessageBoxButtons.YesNoCancel,MessageBoxIcon.Question,MessageBoxDefaultButton.Button1))
             {
                 case DialogResult.Yes:
                     Process.Start("http://www.turkcespiker.com/forum/editpost.php?do=editpost&p=" + MesajNumarası);
