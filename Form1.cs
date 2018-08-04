@@ -29,7 +29,8 @@ namespace HTML_Veri_Çekme
             {
                 foreach (HtmlNode satır in mesaj.SelectNodes("table/tbody/tr"))
                     oyuncuBindingSource.Add(new Oyuncu(satır));
-                this.AcceptButton = button_VeriKaydet;
+                this.AcceptButton = button_PanoyaKopyala;
+                button_PanoyaKopyala.Enabled = true;
 
             }
             catch (Exception ex)
@@ -38,7 +39,7 @@ namespace HTML_Veri_Çekme
                 textBox_MesajNumarası.Focus();
             }
         }
-        private void button_VeriKaydet_Click(object sender, EventArgs e)
+        private void button_PanoyaKopyala_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(mesaj.InnerHtml);
             MesajKutusuGöster(textBox_MesajNumarası.Text);

@@ -33,7 +33,7 @@
             this.textBox_MesajNumarası = new System.Windows.Forms.TextBox();
             this.button_VeriÇek = new System.Windows.Forms.Button();
             this.dataGridView_Maçlar = new System.Windows.Forms.DataGridView();
-            this.button_VeriKaydet = new System.Windows.Forms.Button();
+            this.button_PanoyaKopyala = new System.Windows.Forms.Button();
             this.comboBox_Tablo = new System.Windows.Forms.ComboBox();
             this.label_Tablo = new System.Windows.Forms.Label();
             this.oyuncuBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -62,7 +62,7 @@
             // 
             this.button_VeriÇek.Location = new System.Drawing.Point(212, 6);
             this.button_VeriÇek.Name = "button_VeriÇek";
-            this.button_VeriÇek.Size = new System.Drawing.Size(75, 23);
+            this.button_VeriÇek.Size = new System.Drawing.Size(93, 23);
             this.button_VeriÇek.TabIndex = 2;
             this.button_VeriÇek.Text = "Veri Çek";
             this.button_VeriÇek.UseVisualStyleBackColor = true;
@@ -78,16 +78,16 @@
             this.dataGridView_Maçlar.Size = new System.Drawing.Size(445, 266);
             this.dataGridView_Maçlar.TabIndex = 5;
             // 
-            // button_VeriKaydet
+            // button_PanoyaKopyala
             // 
-            this.button_VeriKaydet.Enabled = false;
-            this.button_VeriKaydet.Location = new System.Drawing.Point(212, 35);
-            this.button_VeriKaydet.Name = "button_VeriKaydet";
-            this.button_VeriKaydet.Size = new System.Drawing.Size(75, 23);
-            this.button_VeriKaydet.TabIndex = 6;
-            this.button_VeriKaydet.Text = "Veri Kaydet";
-            this.button_VeriKaydet.UseVisualStyleBackColor = true;
-            this.button_VeriKaydet.Click += new System.EventHandler(this.button_VeriKaydet_Click);
+            this.button_PanoyaKopyala.Enabled = false;
+            this.button_PanoyaKopyala.Location = new System.Drawing.Point(212, 35);
+            this.button_PanoyaKopyala.Name = "button_PanoyaKopyala";
+            this.button_PanoyaKopyala.Size = new System.Drawing.Size(93, 23);
+            this.button_PanoyaKopyala.TabIndex = 6;
+            this.button_PanoyaKopyala.Text = "Panoya Kopyala";
+            this.button_PanoyaKopyala.UseVisualStyleBackColor = true;
+            this.button_PanoyaKopyala.Click += new System.EventHandler(this.button_PanoyaKopyala_Click);
             // 
             // comboBox_Tablo
             // 
@@ -122,7 +122,7 @@
             this.ClientSize = new System.Drawing.Size(481, 366);
             this.Controls.Add(this.label_Tablo);
             this.Controls.Add(this.comboBox_Tablo);
-            this.Controls.Add(this.button_VeriKaydet);
+            this.Controls.Add(this.button_PanoyaKopyala);
             this.Controls.Add(this.dataGridView_Maçlar);
             this.Controls.Add(this.button_VeriÇek);
             this.Controls.Add(this.textBox_MesajNumarası);
@@ -145,7 +145,7 @@
         private System.Windows.Forms.TextBox textBox_MesajNumarası;
         private System.Windows.Forms.Button button_VeriÇek;
         private System.Windows.Forms.DataGridView dataGridView_Maçlar;
-        private System.Windows.Forms.Button button_VeriKaydet;
+        private System.Windows.Forms.Button button_PanoyaKopyala;
         private System.Windows.Forms.BindingSource oyuncuBindingSource;
         private System.Windows.Forms.ComboBox comboBox_Tablo;
         private System.Windows.Forms.Label label_Tablo;
