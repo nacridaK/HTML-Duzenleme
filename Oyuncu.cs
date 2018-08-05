@@ -10,6 +10,15 @@ namespace HTML_Veri_Çekme
 {
     class Oyuncu
     {
+        static HtmlNode tablo;
+        public static void TabloAyarla(HtmlNode Tablo)
+        {
+            tablo = Tablo;
+        }
+        public static void OyuncuSil(int indis)
+        {
+            tablo.ChildNodes[indis].Remove();
+        }
         HtmlNodeCollection hücreler;
         public string KullanıcıAdı
         {
@@ -29,11 +38,22 @@ namespace HTML_Veri_Çekme
         public string TakımAdı
         {
             get => hücreler[3].InnerText;
-            set => hücreler[3].InnerHtml = value;
+            set
+            {
+                hücreler[3].InnerHtml = value;
+                //TakımArması = FTP'de takım armaları depolanacak.
+            }
         }
-        public Oyuncu(HtmlNode satır)
+        private string TakımArması;
+        public Oyuncu(HtmlNode OyuncuSatır)
         {
-            hücreler = satır.SelectNodes("td");
+            hücreler = OyuncuSatır.SelectNodes("td");
+        }
+        public Oyuncu()
+        {
+            tablo.InnerHtml += "<tr><td> </td><td> </td><td> </td><td> </td></tr>";
+            hücreler = tablo.LastChild.SelectNodes("td");
+            Console.WriteLine(tablo.ChildNodes.Count);
         }
     }
 }
