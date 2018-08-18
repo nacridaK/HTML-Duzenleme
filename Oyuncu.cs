@@ -5,55 +5,60 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using HtmlAgilityPack;
+using System.Windows.Forms;
 
 namespace HTML_Veri_Çekme
 {
     class Oyuncu
     {
-        static HtmlNode tablo;
-        public static void TabloAyarla(HtmlNode Tablo)
-        {
-            tablo = Tablo;
-        }
+        public static HtmlNode OyuncuTablosu;
+        public static List<Oyuncu> Liste = new List<Oyuncu>();
+        HtmlNode OyuncuSatır;
         public static void OyuncuSil(int indis)
         {
-            tablo.ChildNodes[indis].Remove();
+            OyuncuTablosu.SelectNodes("tbody/tr[@id='OT_Satır']")[indis].RemoveAll();
         }
-        HtmlNodeCollection hücreler;
+        public static void OyuncularıGüncelle(BindingSource Kaynak)
+        {
+            Liste.RemoveRange(0, Liste.Count);
+            HtmlNodeCollection OyuncuSatırlar = OyuncuTablosu.SelectNodes("tbody/tr[@id='OT_Satır']");
+            foreach (HtmlNode OyuncuSatır in OyuncuSatırlar)
+                new Oyuncu(OyuncuSatır);
+            Kaynak.DataSource = Oyuncu.Liste;
+        }
         public string KullanıcıAdı
         {
-            get => hücreler[0].InnerText;
-            set => hücreler[0].InnerHtml = value;
+            get => OyuncuSatır.SelectSingleNode("td[@id='OT_Kullanıcı']").InnerText;
+            set => OyuncuSatır.SelectSingleNode("td[@id='OT_Kullanıcı']").InnerHtml = value ?? "&nbsp;";
         }
         public string SteamAdı
         {
-            get => hücreler[1].InnerText;
-            set => hücreler[1].InnerHtml = value;
+            get => OyuncuSatır.SelectSingleNode("td[@id='OT_Steam']").InnerText;
+            set => OyuncuSatır.SelectSingleNode("td[@id='OT_Steam']").InnerHtml = value ?? "&nbsp;";
         }
         public string PESAdı
         {
-            get => hücreler[2].InnerText;
-            set => hücreler[2].InnerHtml = value;
+            get => OyuncuSatır.SelectSingleNode("td[@id='OT_PES']").InnerText;
+            set => OyuncuSatır.SelectSingleNode("td[@id='OT_PES']").InnerHtml = value ?? "&nbsp;";
         }
         public string TakımAdı
         {
-            get => hücreler[3].InnerText;
+            get => OyuncuSatır.SelectSingleNode("td[@id='OT_Takım']").InnerText;
             set
             {
-                hücreler[3].InnerHtml = value;
-                //TakımArması = FTP'de takım armaları depolanacak.
+                OyuncuSatır.SelectSingleNode("td[@id='OT_Takım']").InnerHtml = value ?? "&nbsp;";
+                OyuncuSatır.SelectSingleNode("td[@id='OT_Arma']").FirstChild.SetAttributeValue("src", "http://www.turkcespiker.com/files/alike/arena/ex16_Test/FAPONTE/" + value + ".png" ?? "Belirsiz.png");
             }
         }
-        private string TakımArması;
-        public Oyuncu(HtmlNode OyuncuSatır)
+        private Oyuncu(HtmlNode OyuncuSatır)
         {
-            hücreler = OyuncuSatır.SelectNodes("td");
+            this.OyuncuSatır = OyuncuSatır;
+            Liste.Add(this);
         }
         public Oyuncu()
         {
-            tablo.InnerHtml += "<tr><td> </td><td> </td><td> </td><td> </td></tr>";
-            hücreler = tablo.LastChild.SelectNodes("td");
-            Console.WriteLine(tablo.ChildNodes.Count);
+            OyuncuTablosu.SelectSingleNode("tbody").InnerHtml += "<tr id=\"OT_Satır\"><td height=\"19\" align=\"center\" bgcolor=\"#FFFFCC\" class=\"Gizli\">&nbsp;</td><td bgcolor=\"#FFFFCC\" id=\"OT_Kullanıcı\">&nbsp;</td><td bgcolor=\"#FFFFCC\" id=\"OT_Steam\">&nbsp;</td><td bgcolor=\"#FFFFCC\" id=\"OT_PES\">&nbsp;</td><td align=\"center\" valign=\"middle\" bgcolor=\"#FFFFCC\" id=\"OT_Arma\"><img src=\"http://www.turkcespiker.com/files/alike/arena/ex16_Test/FAPONTE/Belirsiz.png\" height=\"18\"/></td><td bgcolor=\"#FFFFCC\" id=\"OT_Takım\">Belirsiz</td><td align=\"center\" bgcolor=\"#FFFFCC\" class=\"Gizli\">&nbsp;</td></tr>";
+            OyuncuSatır = OyuncuTablosu.SelectSingleNode("tbody").LastChild;
         }
     }
 }
