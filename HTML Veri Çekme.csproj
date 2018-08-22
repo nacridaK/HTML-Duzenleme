@@ -76,6 +76,7 @@
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\GrupOyuncu.datasource" />
+    <None Include="Properties\DataSources\Maç.datasource" />
     <None Include="Properties\DataSources\Oyuncu.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

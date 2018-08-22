@@ -18,29 +18,53 @@ namespace HTML_Veri_Çekme
     public partial class Form1 : Form
     {
         HtmlNode Mesaj;
-        HtmlNode MaçTablosu;
         HtmlNodeCollection GrupTabloları;
+        HtmlNodeCollection MaçTabloları;
         GrupOyuncu[][] Gruplar;
+        Maç[][] Maçlar;
         string SeçilenKullanıcı;
         bool HızlıÇıkış;
+        public static Dictionary<string, string> KullanıcılarSözlük = new Dictionary<string, string>();
         public Form1()
         {
             InitializeComponent();
         }
         private void button_VeriÇek_Click(object sender, EventArgs e)
         {
-            HtmlAgilityPack.HtmlDocument Döküman = VeriyiGetir(numericUpDown_Mesaj.Value);        
-            Mesaj = MesajıGetir(Döküman, numericUpDown_Mesaj.Value);
+            Mesaj = EtiketiGetir("http://www.turkcespiker.com/forum/showpost.php?p=" + numericUpDown_Mesaj.Value, "html/body/form/table[2]/tr[2]/td[2]/div[2]");
             button_VeriÇek.Enabled = false;
             numericUpDown_Mesaj.Enabled = false;
             numericUpDown_Konu.Enabled = false;
             label_Mesaj.Enabled = false;
+            label_Konu.Enabled = false;
             button_PanoyaKopyala.Enabled = true;
-            comboBox_Grup.Enabled = true;
+            toolStripLabel_Grup.Enabled = true;
+            toolStripComboBox_Grup.Enabled = true;
+            KullanıcılarıAyarla();
+            TakımlarıAyarla();
             OyuncuTablosuAyarla();
             GrupTablolalarıAyarla();
-            //MaçTablosuAyarla();
+            MaçTablosuAyarla();
             this.AcceptButton = button_PanoyaKopyala;
+        }
+        private void KullanıcılarıAyarla()
+        {
+            string[] Sınıflar = { "Üye", "Yetkili", "ÜYetkili", "Yönetici", "Spiker" };
+            dataGridViewComboBoxColumn_Rütbe.DataSource = Sınıflar;
+            HtmlNodeCollection Kullanıcılar = EtiketleriGetir("http://www.turkcespiker.com/forum/misc.php?do=whoposted&t=" + numericUpDown_Konu.Value, "html/body/table/tr");
+            for (int i = 2; i < Kullanıcılar.Count - 1; i++)
+            {
+                HtmlNode Kullanıcı = Kullanıcılar[i].SelectSingleNode("td[1]/a");
+                KullanıcılarSözlük.Add(Kullanıcı.InnerText, Kullanıcı.GetAttributeValue("href", null).Split(';')[1]);
+            }
+            KullanıcılarSözlük.Add("&nbsp;", "u=0");
+            dataGridViewComboBoxColumn_KullanıcıAdı.DataSource = KullanıcılarSözlük.Keys.ToArray();
+        }
+        private void TakımlarıAyarla()
+        {
+            HtmlNodeCollection Takımlar = EtiketleriGetir("http://www.turkcespiker.com/files/alike/arena/ex16_Test/FAPONTE/armalar", "html/body/pre//a");
+            for (int i = 0; i < Takımlar.Count - 5; i++)
+                dataGridViewComboBoxColumn_TakımAdı.Items.Add(Takımlar[i + 5].InnerText.Split('.')[0]);
         }
         private void button_PanoyaKopyala_Click(object sender, EventArgs e)
         {
@@ -48,16 +72,68 @@ namespace HTML_Veri_Çekme
             Clipboard.SetText(Mesaj.InnerHtml);
             ÇıkışOnayıGöster(numericUpDown_Mesaj.Value);
         }
-        private void button_OyuncuGüncelle_Click(object sender, EventArgs e)
+        private void SıralanmışGruplarıKaydet()
         {
-            GrupOyuncu EskiOyuncu = Gruplar[comboBox_Grup.SelectedIndex][dataGridView_Grup.SelectedRows[0].Index];
-            Oyuncu YeniOyuncu = Oyuncu.Liste[dataGridView_Oyuncular.SelectedRows[0].Index];
-            EskiOyuncu.OyuncuAdı = YeniOyuncu.KullanıcıAdı;
-            EskiOyuncu.Arma = YeniOyuncu.TakımAdı;
+            HtmlNodeCollection GrupSatırlar = GrupTabloları[toolStripComboBox_Grup.SelectedIndex].SelectNodes("tbody/tr[@id='PT_Satır']");
+            GrupOyuncu[] Grup = Gruplar[toolStripComboBox_Grup.SelectedIndex];
+            string[] Satırlar = new string[Grup.Length];
+            for (int i = 0; i < Grup.Length; i++)
+                Satırlar[i] = "<td align=\"center\" bgcolor=\"#00CC00\" id=\"PT_Sıra\"><strong>" + (i + 1) + "</strong></td><td width=\"35\" align=\"center\" bgcolor=\"#CCFFFF\" id=\"PT_Arma\"><img src=\"http://www.turkcespiker.com/files/alike/arena/ex16_Test/FAPONTE/armalar/" + Grup[i].Arma + ".png\" height=\"18\"/></td><td width=\"130\" bgcolor=\"#FFFFCC\" id=\"PT_Oyuncu\">" + Grup[i].OyuncuAdı + "</td><td align=\"center\" bgcolor=\"#FFFFCC\" id=\"PT_O\">" + Grup[i].OynananMaç + "</td><td align=\"center\" bgcolor=\"#FFFFCC\" id=\"PT_G\">" + Grup[i].GalibiyetSayısı + "</td><td align=\"center\" bgcolor=\"#FFFFCC\" id=\"PT_B\">" + Grup[i].BeraberlikSayısı + "</td><td align=\"center\" bgcolor=\"#FFFFCC\" id=\"PT_M\">" + Grup[i].MağlubiyetSayısı + "</td><td align=\"center\" bgcolor=\"#FFFFCC\" id=\"PT_A\">" + Grup[i].AtılanGol + "</td><td align=\"center\" bgcolor=\"#FFFFCC\" id=\"PT_Y\">" + Grup[i].YenenGol + "</td><td align=\"center\" bgcolor=\"#DDDDB2\" id=\"PT_AV\">" + Grup[i].Averaj + "</td><td align=\"center\" bgcolor=\"#DDDDB2\" id=\"PT_P\">" + Grup[i].Puan + "</td>";
+            for (int i = 0; i < Grup.Length; i++)
+                GrupSatırlar[i].InnerHtml = Satırlar[i];
         }
-        private HtmlNode MesajıGetir(HtmlAgilityPack.HtmlDocument Döküman, decimal MesajNumarası)
+        private void toolStripButton_Sırala_Click(object sender, EventArgs e)
         {
-            return Döküman.DocumentNode.SelectSingleNode("/html/body/form/table[2]/tr[2]/td[2]/div[2]");
+            bindingSource_Grup.DataSource = null;
+            Array.Sort(Gruplar[toolStripComboBox_Grup.SelectedIndex]);
+            SıralanmışGruplarıKaydet();
+            bindingSource_Grup.DataSource = Gruplar[toolStripComboBox_Grup.SelectedIndex];
+        }
+        private void toolStripButton_Güncelle_Click(object sender, EventArgs e)
+        {
+            GrupOyuncu EskiOyuncu = Gruplar[toolStripComboBox_Grup.SelectedIndex][dataGridView_Grup.SelectedRows[0].Index];
+            //Oyuncu YeniOyuncu = Oyuncu.Liste[dataGridView_Oyuncular.SelectedRows[0].Index];
+            Oyuncu YeniOyuncu = Oyuncu.Liste[dataGridView_Oyuncular.SelectedCells[0].RowIndex];
+            for (int i = 0; i < Maçlar[toolStripComboBox_Grup.SelectedIndex].Length; i++)
+            {
+                if(Maçlar[toolStripComboBox_Grup.SelectedIndex][i].EvSahibi == EskiOyuncu.OyuncuAdı)
+                {
+                    Maçlar[toolStripComboBox_Grup.SelectedIndex][i].EvSahibi = YeniOyuncu.KullanıcıAdıHTML;
+                    Maçlar[toolStripComboBox_Grup.SelectedIndex][i].EvSahibiArma = YeniOyuncu.TakımAdı;
+                }
+                else if (Maçlar[toolStripComboBox_Grup.SelectedIndex][i].Konuk == EskiOyuncu.OyuncuAdı)
+                {
+                    Maçlar[toolStripComboBox_Grup.SelectedIndex][i].Konuk = YeniOyuncu.KullanıcıAdıHTML;
+                    Maçlar[toolStripComboBox_Grup.SelectedIndex][i].KonukArma = YeniOyuncu.TakımAdı;
+                }
+            }
+            EskiOyuncu.OyuncuAdı = YeniOyuncu.KullanıcıAdıHTML;
+            EskiOyuncu.Arma = YeniOyuncu.TakımAdı;
+            bindingSource_Grup.DataSource = null;
+            bindingSource_Maçlar.DataSource = null;
+            bindingSource_Grup.DataSource = Gruplar[toolStripComboBox_Grup.SelectedIndex];
+            bindingSource_Maçlar.DataSource = Maçlar[toolStripComboBox_Grup.SelectedIndex];
+        }
+        public static HtmlNode EtiketiGetir(string Adres, string XPath)
+        {
+            WebClient Client = new WebClient();
+            HtmlAgilityPack.HtmlDocument Döküman = new HtmlAgilityPack.HtmlDocument();
+            Döküman.LoadHtml(Client.DownloadString(Adres));
+            return Döküman.DocumentNode.SelectSingleNode(XPath);
+        }
+        private HtmlNodeCollection EtiketleriGetir(string Adres, string XPath)
+        {
+            WebClient Client = new WebClient();
+            HtmlAgilityPack.HtmlDocument Döküman = new HtmlAgilityPack.HtmlDocument();
+            Döküman.LoadHtml(Client.DownloadString(Adres));
+            return Döküman.DocumentNode.SelectNodes(XPath);
+        }
+        private void MaçTablosuAyarla()
+        {
+            MaçTabloları = Mesaj.SelectNodes("//table[@id='M_Tablosu']");
+            Maçlar = new Maç[MaçTabloları.Count][];
+            for (int i = 0; i < MaçTabloları.Count; i++)
+                Maçlar[i] = Maç.MaçlarOluştur(MaçTabloları[i]);
         }
         private void GrupTablolalarıAyarla()
         {
@@ -66,37 +142,59 @@ namespace HTML_Veri_Çekme
             for (int i = 0; i < GrupTabloları.Count; i++)
             {
                 Gruplar[i] = GrupOyuncu.GrupOluştur(GrupTabloları[i]);
-                comboBox_Grup.Items.Add((char)(i + 65) + " Grubu");
+                toolStripComboBox_Grup.Items.Add((char)(i + 65) + " Grubu");
             }
         }
-        private void comboBox_Grup_SelectedIndexChanged(object sender, EventArgs e)
+        private void toolStripComboBox_Grup_SelectedIndexChanged(object sender, EventArgs e)
         {
-            bindingSource_Grup.DataSource = Gruplar[comboBox_Grup.SelectedIndex];
-            button_OyuncuGüncelle.Enabled = true;
+            bindingSource_Grup.DataSource = Gruplar[toolStripComboBox_Grup.SelectedIndex];
+            bindingSource_Maçlar.DataSource = Maçlar[toolStripComboBox_Grup.SelectedIndex];
+            toolStripButton_Güncelle.Enabled = true;
+            toolStripButton_Sırala.Enabled = true;
+            toolStripButton_Kaydet.Enabled = true;
+        }
+        private void toolStripButton_Kaydet_Click(object sender, EventArgs e)
+        {
+            GrupOyuncu[] Grup = Gruplar[toolStripComboBox_Grup.SelectedIndex];
+            Maç[] GrupMaçları = Maçlar[toolStripComboBox_Grup.SelectedIndex];
+            GrupOyuncu.VerileriSıfırla(Grup);
+            for (int i = 0; i < GrupMaçları.Length; i++)
+            {
+                Maç GrupMaçı = GrupMaçları[i];
+                if (GrupMaçı.OynandıMı)
+                {
+                    GrupOyuncu EvSahibi = GrupOyuncu.OyuncuBul(Grup, GrupMaçı.EvSahibi);
+                    GrupOyuncu Konuk = GrupOyuncu.OyuncuBul(Grup, GrupMaçı.Konuk);
+                    EvSahibi.GolAttı(byte.Parse(GrupMaçı.EvSahibiGol));
+                    EvSahibi.GolYedi(byte.Parse(GrupMaçı.KonukGol));
+                    Konuk.GolAttı(byte.Parse(GrupMaçı.KonukGol));
+                    Konuk.GolYedi(byte.Parse(GrupMaçı.EvSahibiGol));
+                    switch (GrupMaçı.Sonuç)
+                    {
+                        case -1:
+                            EvSahibi.Galibiyet();
+                            Konuk.Mağlubiyet();
+                            break;
+                        case 0:
+                            EvSahibi.Beraberlik();
+                            Konuk.Beraberlik();
+                            break;
+                        case 1:
+                            EvSahibi.Mağlubiyet();
+                            Konuk.Galibiyet();
+                            break;
+                    }
+                }
+            }
+            bindingSource_Grup.DataSource = null;
+            bindingSource_Grup.DataSource = Gruplar[toolStripComboBox_Grup.SelectedIndex];
         }
         private void OyuncuTablosuAyarla()
         {
             Oyuncu.OyuncuTablosu = Mesaj.SelectSingleNode("//table[@id='O_Tablosu']");
-            Oyuncu.OyuncularıGüncelle(bindingSource_Oyuncular);
+            Oyuncu.OyuncularıGüncelle(bindingSource_Oyuncular, KullanıcılarSözlük);
             dataGridView_Oyuncular.DataSource = bindingSource_Oyuncular;
-        }
-        private void MaçTablosuAyarla()
-        {
-            while (Maç.Liste.Count != 0)
-                Maç.Liste.RemoveAt(0);
-            MaçTablosu = Mesaj.SelectSingleNode("table[2]/tbody");
-            Maç.TabloAyarla(MaçTablosu);
-            HtmlNodeCollection MaçSatırlar = MaçTablosu.SelectNodes("tr");
-            try
-            {
-                foreach (HtmlNode MaçSatır in MaçSatırlar)
-                    Maç.Liste.Add(new Maç(MaçSatır));
-                //bindingSource_Maçlar.DataSource = Maç.Liste;
-            }
-            catch (Exception ex)
-            {
-                HataMesajıGöster("Maç Tablosu Hatası", ex);
-            }
+            bindingSource_Oyuncular.AllowNew = true;
         }
         private void KoduTemizleVeDüzenle()
         {
@@ -127,7 +225,6 @@ namespace HTML_Veri_Çekme
         {
             if (dataGridView_Oyuncular.DataSource == bindingSource_Oyuncular && dataGridView_Oyuncular.CurrentCell.ColumnIndex == 0)
                 SeçilenKullanıcı =  dataGridView_Oyuncular.CurrentCell.Value.ToString();
-            Console.WriteLine("Düzenleme Başladı");
         }
         private void dataGridView_Oyuncular_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -136,33 +233,21 @@ namespace HTML_Veri_Çekme
         }
         private void bindingSource_Oyuncular_ListChanged(object sender, ListChangedEventArgs e)
         {
+            if (e.ListChangedType == ListChangedType.ItemAdded)
+                Console.WriteLine(e.OldIndex);
             if (e.ListChangedType == ListChangedType.ItemDeleted)
                 Oyuncu.OyuncuSil(e.NewIndex);
         }
         private void dataGridView_Oyuncular_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
-            e.Row.Cells[0].Value = "&nbsp;";
+            e.Row.Cells[0].Value = "Üye";
             e.Row.Cells[1].Value = "&nbsp;";
             e.Row.Cells[2].Value = "&nbsp;";
             e.Row.Cells[3].Value = "Belirsiz";
         }
-        private HtmlAgilityPack.HtmlDocument VeriyiGetir(decimal MesajNumarası)
-        {
-            WebClient client = new WebClient();
-            HtmlAgilityPack.HtmlDocument döküman = new HtmlAgilityPack.HtmlDocument();
-            try
-            {
-                döküman.LoadHtml(client.DownloadString("http://www.turkcespiker.com/forum/showpost.php?p=" + MesajNumarası));
-            }
-            catch (Exception ex)
-            {
-                HataMesajıGöster("İnternet Hatası", ex);
-            }
-            return döküman;
-        }
         private void ÇıkışOnayıGöster(decimal MesajNumarası)
         {
-            switch (MessageBox.Show("HTML kodu panoya kaydedildi, düzenleme sayfası açılıp yazılım kapatılsın mı?", "Çıkış Onayı", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
+            switch (MessageBox.Show("HTML kodu panoya kopyalandı, yazılım kapatıldıktan sonra düzenleme sayfası açılsın mı?", "Çıkış Onayı", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
             {
                 case DialogResult.Yes:
                     Process.Start("http://www.turkcespiker.com/forum/editpost.php?do=editpost&p=" + MesajNumarası);
@@ -179,12 +264,11 @@ namespace HTML_Veri_Çekme
         {
             MessageBox.Show(ex.ToString(), Başlık, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!HızlıÇıkış)
                 if (MessageBox.Show("Çıkış yapmak istediğinizden emin misiniz?", "Çıkış Onayı", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
                     e.Cancel = true;
-        }
+        }        
     }
 }
