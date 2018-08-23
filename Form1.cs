@@ -22,12 +22,13 @@ namespace HTML_Veri_Çekme
         HtmlNodeCollection MaçTabloları;
         GrupOyuncu[][] Gruplar;
         Maç[][] Maçlar;
-        string SeçilenKullanıcı;
         bool HızlıÇıkış;
         public static Dictionary<string, string> KullanıcılarSözlük = new Dictionary<string, string>();
+        public static BindingSource Kaynak;
         public Form1()
         {
             InitializeComponent();
+            Kaynak = bindingSource_Oyuncular;
         }
         private void button_VeriÇek_Click(object sender, EventArgs e)
         {
@@ -192,9 +193,22 @@ namespace HTML_Veri_Çekme
         private void OyuncuTablosuAyarla()
         {
             Oyuncu.OyuncuTablosu = Mesaj.SelectSingleNode("//table[@id='O_Tablosu']");
-            Oyuncu.OyuncularıGüncelle(bindingSource_Oyuncular, KullanıcılarSözlük);
+            Oyuncu.OyuncularıGüncelle();
             dataGridView_Oyuncular.DataSource = bindingSource_Oyuncular;
             bindingSource_Oyuncular.AllowNew = true;
+        }
+        private void toolStripButton_Kontrol_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(Oyuncu.Liste.Count);
+            HtmlNodeCollection OyuncuSatırlar = Mesaj.SelectNodes("//table[@id='O_Tablosu']/tbody/tr[@id='OT_Satır']");
+            foreach (HtmlNode OyuncuSatır in OyuncuSatırlar)
+                Console.WriteLine(OyuncuSatır.InnerHtml);
+            Console.WriteLine();
+        }
+        private void toolStripButton_Yenile_Click(object sender, EventArgs e)
+        {
+            bindingSource_Oyuncular.DataSource = null;
+            bindingSource_Oyuncular.DataSource = Oyuncu.Liste;
         }
         private void KoduTemizleVeDüzenle()
         {
@@ -218,13 +232,11 @@ namespace HTML_Veri_Çekme
                     Mesaj.InnerHtml = Mesaj.InnerHtml.Replace(Etiket.ParentNode.ParentNode.OuterHtml, "[GIZLI]" + Etiket.InnerHtml + "[/GIZLI]");
                 }
             Mesaj.InnerHtml = Mesaj.InnerHtml.Replace("<br>", null);
-            //Mesaj.InnerHtml = Mesaj.InnerHtml.Replace("<tr></tr>", null);
-            //Mesaj.InnerHtml = Mesaj.InnerHtml.Replace("<td height=\"19\" align=\"center\" bgcolor=\"#FFFFCC\" class=\"Gizli\">&nbsp;</td><td bgcolor=\"#FFFFCC\" id=\"OT_Kullanıcı\">&nbsp;</td><td bgcolor=\"#FFFFCC\" id=\"OT_Steam\">&nbsp;</td><td bgcolor=\"#FFFFCC\" id=\"OT_PES\">&nbsp;</td><td align=\"center\" valign=\"middle\" bgcolor=\"#FFFFCC\" id=\"OT_Arma\"><img src=\"http://www.turkcespiker.com/files/alike/arena/ex16_Test/FAPONTE/Belirsiz.png\" height=\"18\"/></td><td bgcolor=\"#FFFFCC\" id=\"OT_Takım\">Belirsiz</td><td align=\"center\" bgcolor=\"#FFFFCC\" class=\"Gizli\">&nbsp;</td>", null);
         }
         private void dataGridView_Oyuncular_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            if (dataGridView_Oyuncular.DataSource == bindingSource_Oyuncular && dataGridView_Oyuncular.CurrentCell.ColumnIndex == 0)
-                SeçilenKullanıcı =  dataGridView_Oyuncular.CurrentCell.Value.ToString();
+            //if (dataGridView_Oyuncular.DataSource == bindingSource_Oyuncular && dataGridView_Oyuncular.CurrentCell.ColumnIndex == 0)
+            //    SeçilenKullanıcı =  dataGridView_Oyuncular.CurrentCell.Value.ToString();
         }
         private void dataGridView_Oyuncular_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -233,17 +245,19 @@ namespace HTML_Veri_Çekme
         }
         private void bindingSource_Oyuncular_ListChanged(object sender, ListChangedEventArgs e)
         {
-            if (e.ListChangedType == ListChangedType.ItemAdded)
-                Console.WriteLine(e.OldIndex);
-            if (e.ListChangedType == ListChangedType.ItemDeleted)
-                Oyuncu.OyuncuSil(e.NewIndex);
-        }
-        private void dataGridView_Oyuncular_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
-        {
-            e.Row.Cells[0].Value = "Üye";
-            e.Row.Cells[1].Value = "&nbsp;";
-            e.Row.Cells[2].Value = "&nbsp;";
-            e.Row.Cells[3].Value = "Belirsiz";
+            switch (e.ListChangedType)
+            {
+                case ListChangedType.ItemAdded:
+                    Console.WriteLine("ItemAdded");
+                    break;
+                case ListChangedType.ItemChanged:
+                    Console.WriteLine("ItemChanged");
+                    break;
+                case ListChangedType.ItemDeleted:
+                    Console.WriteLine("ItemDeleted");
+                    Oyuncu.OyuncuSil(e.NewIndex);
+                    break;
+            }
         }
         private void ÇıkışOnayıGöster(decimal MesajNumarası)
         {
@@ -269,6 +283,6 @@ namespace HTML_Veri_Çekme
             if (!HızlıÇıkış)
                 if (MessageBox.Show("Çıkış yapmak istediğinizden emin misiniz?", "Çıkış Onayı", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
                     e.Cancel = true;
-        }        
+        }
     }
 }

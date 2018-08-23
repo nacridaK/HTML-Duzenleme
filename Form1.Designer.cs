@@ -33,14 +33,11 @@
             this.label_Mesaj = new System.Windows.Forms.Label();
             this.button_VeriÇek = new System.Windows.Forms.Button();
             this.dataGridView_Oyuncular = new System.Windows.Forms.DataGridView();
-            this.dataGridViewComboBoxColumn_Rütbe = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewComboBoxColumn_TakımAdı = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.button_PanoyaKopyala = new System.Windows.Forms.Button();
             this.numericUpDown_Mesaj = new System.Windows.Forms.NumericUpDown();
             this.dataGridView_Grup = new System.Windows.Forms.DataGridView();
             this.groupBox_Oyuncular = new System.Windows.Forms.GroupBox();
             this.bindingNavigator_Oyuncular = new System.Windows.Forms.BindingNavigator(this.components);
-            this.bindingNavigator_Oyuncular_AddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigator_Oyuncular_CountItem = new System.Windows.Forms.ToolStripLabel();
             this.bindingNavigator_Oyuncular_DeleteItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigator_Oyuncular_MoveFirstItem = new System.Windows.Forms.ToolStripButton();
@@ -51,6 +48,9 @@
             this.bindingNavigator_Oyuncular_Separator2 = new System.Windows.Forms.ToolStripSeparator();
             this.bindingNavigator_Oyuncular_MoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigator_Oyuncular_Separator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.bindingNavigator_Oyuncular_AddNewItem = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton_Kontrol = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton_Yenile = new System.Windows.Forms.ToolStripButton();
             this.groupBox_Grup = new System.Windows.Forms.GroupBox();
             this.bindingNavigator_Grup = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigator_Grup_CountItem = new System.Windows.Forms.ToolStripLabel();
@@ -103,9 +103,11 @@
             this.dataGridViewComboBoxColumn_Averaj = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewComboBoxColumn_Puan = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource_Oyuncular = new System.Windows.Forms.BindingSource(this.components);
+            this.dataGridViewComboBoxColumn_Rütbe = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewComboBoxColumn_KullanıcıAdı = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewComboBoxColumn_SteamAdı = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewComboBoxColumn_PESAdı = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn_SteamAdı = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn_PESAdı = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewComboBoxColumn_TakımAdı = new System.Windows.Forms.DataGridViewComboBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Oyuncular)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Mesaj)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Grup)).BeginInit();
@@ -155,8 +157,8 @@
             this.dataGridView_Oyuncular.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewComboBoxColumn_Rütbe,
             this.dataGridViewComboBoxColumn_KullanıcıAdı,
-            this.dataGridViewComboBoxColumn_SteamAdı,
-            this.dataGridViewComboBoxColumn_PESAdı,
+            this.dataGridViewTextBoxColumn_SteamAdı,
+            this.dataGridViewTextBoxColumn_PESAdı,
             this.dataGridViewComboBoxColumn_TakımAdı});
             this.dataGridView_Oyuncular.DataSource = this.bindingSource_Oyuncular;
             this.dataGridView_Oyuncular.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -164,28 +166,11 @@
             this.dataGridView_Oyuncular.MultiSelect = false;
             this.dataGridView_Oyuncular.Name = "dataGridView_Oyuncular";
             this.dataGridView_Oyuncular.RowHeadersVisible = false;
-            this.dataGridView_Oyuncular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView_Oyuncular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView_Oyuncular.Size = new System.Drawing.Size(461, 397);
             this.dataGridView_Oyuncular.TabIndex = 5;
             this.dataGridView_Oyuncular.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_Oyuncular_CellBeginEdit);
             this.dataGridView_Oyuncular.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_Oyuncular_CellEndEdit);
-            this.dataGridView_Oyuncular.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridView_Oyuncular_DefaultValuesNeeded);
-            // 
-            // dataGridViewComboBoxColumn_Rütbe
-            // 
-            this.dataGridViewComboBoxColumn_Rütbe.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.dataGridViewComboBoxColumn_Rütbe.DataPropertyName = "Rütbe";
-            this.dataGridViewComboBoxColumn_Rütbe.HeaderText = "Rütbe";
-            this.dataGridViewComboBoxColumn_Rütbe.Name = "dataGridViewComboBoxColumn_Rütbe";
-            this.dataGridViewComboBoxColumn_Rütbe.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn_Rütbe.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewComboBoxColumn_Rütbe.Width = 61;
-            // 
-            // dataGridViewComboBoxColumn_TakımAdı
-            // 
-            this.dataGridViewComboBoxColumn_TakımAdı.DataPropertyName = "TakımAdı";
-            this.dataGridViewComboBoxColumn_TakımAdı.HeaderText = "TakımAdı";
-            this.dataGridViewComboBoxColumn_TakımAdı.Name = "dataGridViewComboBoxColumn_TakımAdı";
             // 
             // button_PanoyaKopyala
             // 
@@ -274,7 +259,9 @@
             this.bindingNavigator_Oyuncular_MoveLastItem,
             this.bindingNavigator_Oyuncular_Separator3,
             this.bindingNavigator_Oyuncular_AddNewItem,
-            this.bindingNavigator_Oyuncular_DeleteItem});
+            this.bindingNavigator_Oyuncular_DeleteItem,
+            this.toolStripButton_Kontrol,
+            this.toolStripButton_Yenile});
             this.bindingNavigator_Oyuncular.Location = new System.Drawing.Point(3, 16);
             this.bindingNavigator_Oyuncular.MoveFirstItem = this.bindingNavigator_Oyuncular_MoveFirstItem;
             this.bindingNavigator_Oyuncular.MoveLastItem = this.bindingNavigator_Oyuncular_MoveLastItem;
@@ -285,15 +272,6 @@
             this.bindingNavigator_Oyuncular.Size = new System.Drawing.Size(461, 25);
             this.bindingNavigator_Oyuncular.TabIndex = 14;
             this.bindingNavigator_Oyuncular.Text = "bindingNavigator1";
-            // 
-            // bindingNavigator_Oyuncular_AddNewItem
-            // 
-            this.bindingNavigator_Oyuncular_AddNewItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigator_Oyuncular_AddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigator_Oyuncular_AddNewItem.Image")));
-            this.bindingNavigator_Oyuncular_AddNewItem.Name = "bindingNavigator_Oyuncular_AddNewItem";
-            this.bindingNavigator_Oyuncular_AddNewItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigator_Oyuncular_AddNewItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigator_Oyuncular_AddNewItem.Text = "Yeni ekle";
             // 
             // bindingNavigator_Oyuncular_CountItem
             // 
@@ -370,6 +348,34 @@
             // 
             this.bindingNavigator_Oyuncular_Separator3.Name = "bindingNavigator_Oyuncular_Separator3";
             this.bindingNavigator_Oyuncular_Separator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // bindingNavigator_Oyuncular_AddNewItem
+            // 
+            this.bindingNavigator_Oyuncular_AddNewItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigator_Oyuncular_AddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigator_Oyuncular_AddNewItem.Image")));
+            this.bindingNavigator_Oyuncular_AddNewItem.Name = "bindingNavigator_Oyuncular_AddNewItem";
+            this.bindingNavigator_Oyuncular_AddNewItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigator_Oyuncular_AddNewItem.Size = new System.Drawing.Size(23, 22);
+            this.bindingNavigator_Oyuncular_AddNewItem.Text = "Yeni ekle";
+            this.bindingNavigator_Oyuncular_AddNewItem.Visible = false;
+            // 
+            // toolStripButton_Kontrol
+            // 
+            this.toolStripButton_Kontrol.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_Kontrol.Image")));
+            this.toolStripButton_Kontrol.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_Kontrol.Name = "toolStripButton_Kontrol";
+            this.toolStripButton_Kontrol.Size = new System.Drawing.Size(79, 22);
+            this.toolStripButton_Kontrol.Text = "Kontrol Et";
+            this.toolStripButton_Kontrol.Click += new System.EventHandler(this.toolStripButton_Kontrol_Click);
+            // 
+            // toolStripButton_Yenile
+            // 
+            this.toolStripButton_Yenile.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton_Yenile.Image")));
+            this.toolStripButton_Yenile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton_Yenile.Name = "toolStripButton_Yenile";
+            this.toolStripButton_Yenile.Size = new System.Drawing.Size(58, 22);
+            this.toolStripButton_Yenile.Text = "Yenile";
+            this.toolStripButton_Yenile.Click += new System.EventHandler(this.toolStripButton_Yenile_Click);
             // 
             // groupBox_Grup
             // 
@@ -868,6 +874,16 @@
             this.bindingSource_Oyuncular.DataSource = typeof(HTML_Veri_Çekme.Oyuncu);
             this.bindingSource_Oyuncular.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.bindingSource_Oyuncular_ListChanged);
             // 
+            // dataGridViewComboBoxColumn_Rütbe
+            // 
+            this.dataGridViewComboBoxColumn_Rütbe.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.dataGridViewComboBoxColumn_Rütbe.DataPropertyName = "Rütbe";
+            this.dataGridViewComboBoxColumn_Rütbe.HeaderText = "Rütbe";
+            this.dataGridViewComboBoxColumn_Rütbe.Name = "dataGridViewComboBoxColumn_Rütbe";
+            this.dataGridViewComboBoxColumn_Rütbe.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewComboBoxColumn_Rütbe.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn_Rütbe.Width = 61;
+            // 
             // dataGridViewComboBoxColumn_KullanıcıAdı
             // 
             this.dataGridViewComboBoxColumn_KullanıcıAdı.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -878,22 +894,29 @@
             this.dataGridViewComboBoxColumn_KullanıcıAdı.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewComboBoxColumn_KullanıcıAdı.Width = 89;
             // 
-            // dataGridViewComboBoxColumn_SteamAdı
+            // dataGridViewTextBoxColumn_SteamAdı
             // 
-            this.dataGridViewComboBoxColumn_SteamAdı.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.dataGridViewComboBoxColumn_SteamAdı.DataPropertyName = "SteamAdı";
-            this.dataGridViewComboBoxColumn_SteamAdı.HeaderText = "Steam Adı";
-            this.dataGridViewComboBoxColumn_SteamAdı.Name = "dataGridViewComboBoxColumn_SteamAdı";
-            this.dataGridViewComboBoxColumn_SteamAdı.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn_SteamAdı.Width = 80;
+            this.dataGridViewTextBoxColumn_SteamAdı.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.dataGridViewTextBoxColumn_SteamAdı.DataPropertyName = "SteamAdı";
+            this.dataGridViewTextBoxColumn_SteamAdı.HeaderText = "Steam Adı";
+            this.dataGridViewTextBoxColumn_SteamAdı.Name = "dataGridViewTextBoxColumn_SteamAdı";
+            this.dataGridViewTextBoxColumn_SteamAdı.Width = 80;
             // 
-            // dataGridViewComboBoxColumn_PESAdı
+            // dataGridViewTextBoxColumn_PESAdı
             // 
-            this.dataGridViewComboBoxColumn_PESAdı.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.dataGridViewComboBoxColumn_PESAdı.DataPropertyName = "PESAdı";
-            this.dataGridViewComboBoxColumn_PESAdı.HeaderText = "PES Adı";
-            this.dataGridViewComboBoxColumn_PESAdı.Name = "dataGridViewComboBoxColumn_PESAdı";
-            this.dataGridViewComboBoxColumn_PESAdı.Width = 71;
+            this.dataGridViewTextBoxColumn_PESAdı.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.dataGridViewTextBoxColumn_PESAdı.DataPropertyName = "PESAdı";
+            this.dataGridViewTextBoxColumn_PESAdı.HeaderText = "PES Adı";
+            this.dataGridViewTextBoxColumn_PESAdı.Name = "dataGridViewTextBoxColumn_PESAdı";
+            this.dataGridViewTextBoxColumn_PESAdı.Width = 71;
+            // 
+            // dataGridViewComboBoxColumn_TakımAdı
+            // 
+            this.dataGridViewComboBoxColumn_TakımAdı.DataPropertyName = "TakımAdı";
+            this.dataGridViewComboBoxColumn_TakımAdı.HeaderText = "Takım Adı";
+            this.dataGridViewComboBoxColumn_TakımAdı.Name = "dataGridViewComboBoxColumn_TakımAdı";
+            this.dataGridViewComboBoxColumn_TakımAdı.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewComboBoxColumn_TakımAdı.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // Form1
             // 
@@ -953,7 +976,6 @@
         private System.Windows.Forms.GroupBox groupBox_Ayarlar;
         private System.Windows.Forms.Label label_Konu;
         private System.Windows.Forms.NumericUpDown numericUpDown_Konu;
-        private System.Windows.Forms.BindingSource bindingSource_Oyuncular;
         private System.Windows.Forms.BindingSource bindingSource_Grup;
         private System.Windows.Forms.GroupBox groupBox_Maç;
         private System.Windows.Forms.DataGridView dataGridView_Maçlar;
@@ -1013,10 +1035,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewComboBoxColumn_EvSahibiSkor;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewComboBoxColumn_KonukSkor;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewComboBoxColumn_Konuk;
+        private System.Windows.Forms.ToolStripButton toolStripButton_Kontrol;
         private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn_Rütbe;
         private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn_KullanıcıAdı;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewComboBoxColumn_SteamAdı;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewComboBoxColumn_PESAdı;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn_SteamAdı;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn_PESAdı;
         private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn_TakımAdı;
+        private System.Windows.Forms.ToolStripButton toolStripButton_Yenile;
+        public System.Windows.Forms.BindingSource bindingSource_Oyuncular;
     }
 }
